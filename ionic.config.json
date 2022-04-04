@@ -1,0 +1,7 @@
+{
+  "name": "Ionic-Anglart-Coure",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
