@@ -11,6 +11,7 @@
   <ion-button
     class="ion-margin"
     color="primary"
-    [routerLink]="['/', 'places','tabs','offers','edit',place.id]"
-  >Edit</ion-button>
-</ion-content>
+    (click)="onNav()"
+    >Edit</ion-button>
+  </ion-content>
+  <!-- [routerLink]="['/', 'places','tabs','offers','edit',place.id]" -->

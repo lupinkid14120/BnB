@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Place } from '../../place.module';
 
 @Component({
@@ -9,11 +10,12 @@ import { Place } from '../../place.module';
 export class OfferItemComponent implements OnInit {
   @Input() offer: Place;
 
-  constructor() { }
+  constructor(private route: Router) { }
 
   ngOnInit() {}
 
-  getDummyDate(){
-    return new Date();
+  onLog(){
+    console.log(this.offer.id);
+    // this.route.navigate(['/', 'places','tabs','offers',this.offer.id]);
   }
 }

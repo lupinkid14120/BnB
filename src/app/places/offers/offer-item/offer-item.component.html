@@ -1,3 +1,4 @@
+<!-- (click)="onLog()" -->
 <ion-item
   [routerLink]="[
     '/',
@@ -16,13 +17,13 @@
       <div>
         <span>From</span>
         <ion-icon name="calendar" class="space-left" color="primary"></ion-icon>
-        <ion-text color="tertiary" class="space-left">{{ getDummyDate() | date}}</ion-text>
+        <ion-text color="tertiary" class="space-left">{{ offer.availableFrom | date}}</ion-text>
       </div>
 
       <div>
         <span>To</span>
         <ion-icon name="calendar" class="space-left" color="primary"></ion-icon>
-        <ion-text color="tertiary" class="space-left">{{ getDummyDate() | date}}</ion-text>
+        <ion-text color="tertiary" class="space-left">{{ offer.availableTo | date}}</ion-text>
       </div>
     </div>
   </ion-label>

@@ -17,16 +17,32 @@
     <ion-segment-button value="bookable">Bookable Places</ion-segment-button>
   </ion-segment>
 
-  <ion-grid>
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="!isLoading && (!relevantPlaces || relevantPlaces.length <= 0)">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <p>There are no bookable places right row, please come back later!</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="!isLoading && relevantPlaces.length > 0">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-card>
           <ion-card-header>
-            <ion-card-title>{{loadedPlaces[0].title }}</ion-card-title>
-            <ion-card-subtitle>{{loadedPlaces[0].price | currency:'VND':true:'1.0-3'}} / Night</ion-card-subtitle>
-            <ion-img [src]="loadedPlaces[0].imageUrl"></ion-img>
+            <ion-card-title>{{relevantPlaces[0].title }}</ion-card-title>
+            <ion-card-subtitle>{{relevantPlaces[0].price | currency:'VND':'symbol':'1.0-3'}} / Night</ion-card-subtitle>
+            <ion-img [src]="relevantPlaces[0].imageUrl"></ion-img>
             <ion-card-content>
-              <p>{{loadedPlaces[0].description}}</p>
+              <p>{{relevantPlaces[0].description}}</p>
             </ion-card-content>
           </ion-card-header>
 
@@ -39,7 +55,7 @@
                 'places',
                 'tabs',
                 'discover',
-                loadedPlaces[0].id
+                relevantPlaces[0].id
               ]"
             >
               More
@@ -51,6 +67,30 @@
 
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <!-- <cdk-virtual-scroll-viewport
+          itemSize="70"
+          class="ion-content-scroll-host"
+        >
+          <ion-item
+            [routerLink]="[
+              '/',
+              'places',
+              'tabs',
+              'discover',
+              place.id
+            ]"
+            detail
+            *cdkVirtualFor="let place of listLoadedPlaces"
+          >
+            <ion-thumbnail slot="start">
+              <ion-img [src]="place.imageUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{place.title}}</h2>
+              <p>{{place.description}}</p>
+            </ion-label>
+          </ion-item>
+        </cdk-virtual-scroll-viewport> -->
         <ion-virtual-scroll
           [items]="listLoadedPlaces"
           approxItemHeight="70px"

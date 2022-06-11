@@ -10,13 +10,13 @@
 </ion-header>
 
 <ion-content class="ion-text-center ion-padding">
-  <form>
+  <form (ngSubmit)="onBookPlace()" #f="ngForm">
     <ion-grid>
       <ion-row>
         <ion-col size-sm="6" offset-sm="3">
           <ion-item>
             <ion-label position="floating">First Name</ion-label>
-            <ion-input type="text" ngModel name="first-name" required=""></ion-input>
+            <ion-input type="text" ngModel name="first-name" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -25,7 +25,7 @@
         <ion-col size-sm="6" offset-sm="3">
           <ion-item>
             <ion-label position="floating">Last Name</ion-label>
-            <ion-input type="text" ngModel name="last-name" required=""></ion-input>
+            <ion-input type="text" ngModel name="last-name" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -44,30 +44,24 @@
       </ion-row>
 
       <ion-row>
-        <!-- <ion-col size-sm="3" offset-sm="3">
-          <ion-item>
-            <ion-label position="floating">From</ion-label>
-            <ion-datetime
-              presentation="date"
-            >
-            </ion-datetime>
-          </ion-item>
-        </ion-col> -->
         <ion-col size-sm="3" offset-sm="3">
           <ion-item >
             <ion-label position="floating">From</ion-label>
-            <ion-input value="{{dateValue || formatDate(startDate)}}" id="open-date-input-3"></ion-input>
-            <ion-popover trigger="open-date-input-3" show-backdrop>
+            <ion-input
+              value="{{startDate | date: 'MMM dd yyyy'}}"
+              id="open-date-input-from"
+              ngModel
+              name="date-input-from"
+              required
+            ></ion-input>
+            <ion-popover trigger="open-date-input-from" show-backdrop>
               <ng-template>
                 <ion-datetime
                   [(ngModel)]="startDate"
-                  #startDateCtrl="ngModel"
+                  name="date-from"
                   presentation="date"
-                  (ionChange)="dateValue = formatDate(startDateCtrl.value)"
                   [min]="selectedPlace.availableFrom.toISOString()"
                   [max]="selectedPlace.availableTo.toISOString()"
-                  name="date-from"
-                  required
                 >
                 </ion-datetime>
               </ng-template>
@@ -77,19 +71,24 @@
       </ion-row>
 
       <ion-row>
-        <ion-col size-sm="3">
-          <ion-item>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item >
             <ion-label position="floating">To</ion-label>
-            <ion-input value="{{dateValue2 || formatDate(endDate)}}"  id="open-date-input-2"></ion-input>
-            <ion-popover trigger="open-date-input-2" show-backdrop>
+            <ion-input
+              value="{{endDate | date: 'MMM dd yyyy'}}"
+              id="open-date-input-to"
+              ngModel
+              name="date-input-to"
+              required
+            ></ion-input>
+            <ion-popover trigger="open-date-input-to" show-backdrop>
               <ng-template>
                 <ion-datetime
-                  #popoverDatetime2
-                  presentation="date"
-                  (ionChange)="dateValue2 = formatDate(popoverDatetime2.value)"
-                  [max]="selectedPlace.availableTo.toISOString()"
                   [(ngModel)]="endDate"
-                  required
+                  name="date-to"
+                  presentation="date"
+                  [min]="startDate"
+                  [max]="selectedPlace.availableTo.toISOString()"
                 >
                 </ion-datetime>
               </ng-template>
@@ -97,31 +96,9 @@
           </ion-item>
         </ion-col>
       </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Pick date</ion-label>
-            <ion-input
-              value="{{ startDate | date: 'dd.MM.yyyy' }}"
-              id="date"
-            ></ion-input>
-            <ion-popover trigger="date" size="cover">
-              <ng-template>
-                <ion-datetime
-                  presentation="date"
-                  [(ngModel)]="startDate"
-                  locale="sl-SI"
-                ></ion-datetime>
-              </ng-template>
-            </ion-popover>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
       <ion-row>
         <ion-col size-sm="6" offset-sm="3">
-          <ion-button color="primary" type="submit" expand="block">Book!</ion-button>
+          <ion-button color="primary" type="submit" expand="block" [disabled]="!f.valid" >Book!</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

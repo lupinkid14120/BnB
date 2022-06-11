@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {format, parseISO} from 'date-fns';
 import { ModalController } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 import { Place } from '../../places/place.module';
 
@@ -12,10 +13,9 @@ import { Place } from '../../places/place.module';
 export class CreateBookingComponent implements OnInit {
   @Input() selectedPlace: Place;
   @Input() selectedMode: 'select' | 'random';
-  dateValue = '';
-  dateValue2 = '';
-  startDate: string;
-  endDate: string;
+  @ViewChild('f') form: NgForm;
+  startDate: string = '';
+  endDate: string = '';
 
   constructor(private modalCtrl: ModalController) { }
   ngOnInit() {
@@ -45,11 +45,30 @@ export class CreateBookingComponent implements OnInit {
   }
 
   onBookPlace(){
-    this.modalCtrl.dismiss({message: 'This is a dummy message!'},'confirm');
+    if(!this.form.valid || !this.datesValid){
+      return;
+    }
+    this.modalCtrl.dismiss(
+      {
+        bookingData:{
+          firstName: this.form.value['first-name'],
+          lastName: this.form.value['last-name'],
+          guestNumber: +this.form.value['guest-number'],
+          startDate: new Date(this.form.value['date-input-from']),
+          endDate: new Date(this.form.value['date-input-to']),
+        }
+      },'confirm');
+    // console.log(this.form);
+    console.log(this.form.value);
   }
 
-  formatDate(value: string) {
-    return format(parseISO(value), 'MMM dd yyyy');
-  }
+  // formatDate(value: string) {
+  //   return format(parseISO(value), 'MMM dd yyyy');
+  // }
 
+  datesValid(){
+    const startDate = new Date(this.form.value['date-form']);
+    const endDate = new Date(this.form.value['date-to']);
+    return endDate > startDate;
+  }
 }
